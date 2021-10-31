@@ -44,7 +44,7 @@ func New(cfg Config) Logger {
 	writer := getWirteSyncer(cfg.FilePath)
 	core := zapcore.NewCore(getEncoder(), writer, level)
 
-	logger := zap.New(
+	zapLogger := zap.New(
 		core,
 		zap.AddCaller(),
 		zap.AddCallerSkip(1),
@@ -52,14 +52,12 @@ func New(cfg Config) Logger {
 	)
 
 	defer func() {
-		if err := logger.Sync(); err != nil {
+		if err := zapLogger.Sync(); err != nil {
 			panic("logger sync failed")
 		}
 	}()
 
-	return &logger{
-		SugaredLogger: logger.Sugar(),
-	}
+	return &logger{zapLogger.Sugar()}
 }
 
 func getWirteSyncer(filePath string) zapcore.WriteSyncer {

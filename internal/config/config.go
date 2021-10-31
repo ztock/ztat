@@ -13,11 +13,11 @@ type Config struct {
 	// Metrics configuration
 	Metrics *MetricsConfig `mapstructure:"metrics"`
 
+	// Metrics configuration
+	Logger *LoggerConfig `mapstructure:"logger"`
+
 	// Output logs to console
 	Console bool `mapstructure:"console"`
-
-	// Detailed log output
-	Verbose bool `mapstructure:"verbose"`
 }
 
 type ServerConfig struct {
@@ -47,6 +47,14 @@ type MetricsConfig struct {
 	Addr string `mapstructure:"addr"`
 }
 
+type LoggerConfig struct {
+	// Level is a logging priority
+	Level string `mapstructure:"level"`
+
+	// FilePath is the log storage file path
+	FilePath string `mapstructure:"filePath"`
+}
+
 // New returns a new Config
 func New() *Config {
 	return &Config{
@@ -59,6 +67,10 @@ func New() *Config {
 		},
 		Metrics: &MetricsConfig{
 			Addr: constant.DefaultMetricsServerAddr,
+		},
+		Logger: &LoggerConfig{
+			Level:    DefaultLoggerLevel,
+			FilePath: DefaultLoggerFilePath,
 		},
 	}
 }

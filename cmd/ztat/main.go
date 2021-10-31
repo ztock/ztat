@@ -2,15 +2,16 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/mitchellh/go-homedir"
 	"github.com/pkg/errors"
-	"github.com/ztock/ztat/internal/config"
-
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/ztock/ztat/internal/config"
+	"github.com/ztock/ztat/pkg/logger"
 )
 
 var (
@@ -35,9 +36,8 @@ Complete documentation is available at https://github.com/ztock/ztat`,
 		// defer cancel()
 
 		// Init logger
-		initLog(cfg)
-
-		logrus.Debugf("Load config success: %#v", cfg)
+		logger := initLog(cfg)
+		logger.Debugf("Load config success: %#v", cfg)
 
 		return nil
 	},
@@ -62,7 +62,6 @@ func init() {
 	flagSet.StringVar(&cfg.Server.Addr, "server", cfg.Server.Addr, "set the address for server")
 	flagSet.StringVar(&cfg.Metrics.Addr, "metrics", cfg.Metrics.Addr, "set the address for metrics server")
 	flagSet.BoolVar(&cfg.Console, "console", false, "whether logger output records to the stdout")
-	flagSet.BoolVar(&cfg.Verbose, "verbose", false, "whether logger use debug level")
 
 	if err := viper.BindPFlags(rootCmd.PersistentFlags()); err != nil {
 		panic(err)
@@ -91,16 +90,24 @@ func initConfig() {
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		logrus.Debugf("Using config file: %s", viper.ConfigFileUsed())
+		log.Fatalf("Using config file: %s", viper.ConfigFileUsed())
 	}
 
 	// Unmarshal config
 	if err := viper.Unmarshal(&cfg); err != nil {
-		logrus.Fatalf(errors.Wrap(err, "cannot unmarshal config").Error())
+		log.Fatalf(errors.Wrap(err, "cannot unmarshal config").Error())
 	}
 }
 
-func initLog(cfg *config.Config) {
+func initLog(cfg *config.Config) logger.Logger {
+	if cfg.Console == true {
+		cfg.Logger.FilePath = ""
+	}
+
+	return logger.New(logger.Config{
+		Level:    cfg.Logger.Level,
+		FilePath: cfg.Logger.FilePath,
+	})
 }
 
 func main() {
