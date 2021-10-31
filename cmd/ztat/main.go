@@ -59,8 +59,8 @@ func init() {
 
 	// Add flags
 	flagSet := rootCmd.PersistentFlags()
-	flagSet.StringVar(&cfg.Server.Addr, "server-addr", cfg.Server.Addr, "set the address for server")
-	flagSet.StringVar(&cfg.Metrics.Addr, "metrics-addr", cfg.Metrics.Addr, "set the address for metrics server")
+	flagSet.StringVar(&cfg.Server.Addr, "server", cfg.Server.Addr, "set the address for server")
+	flagSet.StringVar(&cfg.Metrics.Addr, "metrics", cfg.Metrics.Addr, "set the address for metrics server")
 	flagSet.BoolVar(&cfg.Console, "console", false, "whether logger output records to the stdout")
 	flagSet.BoolVar(&cfg.Verbose, "verbose", false, "whether logger use debug level")
 
