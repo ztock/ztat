@@ -11,7 +11,7 @@ import (
 
 const (
 	DefaultMaxSize  = 100
-	DefaultBackups  = 5
+	DefaultBackups  = 10
 	DefaultMaxAge   = 30
 	DefaultCompress = true
 )
