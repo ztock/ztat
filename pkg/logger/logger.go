@@ -150,5 +150,6 @@ func (l *logger) WithFields(fields map[string]interface{}) Logger {
 		f = append(f, k)
 		f = append(f, v)
 	}
+
 	return &logger{l.SugaredLogger.With(f...)}
 }
