@@ -32,6 +32,7 @@ Complete documentation is available at https://github.com/ztock/ztat`,
 	SilenceUsage: true,
 	Args:         cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
+
 		// ctx, cancel := context.WithCancel(context.Background())
 		// defer cancel()
 
