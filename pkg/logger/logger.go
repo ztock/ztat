@@ -43,7 +43,6 @@ func New(cfg Config) Logger {
 	level := getZapLevel(cfg.Level)
 	writer := getWirteSyncer(cfg.FilePath)
 	core := zapcore.NewCore(getEncoder(), writer, level)
-
 	zapLogger := zap.New(
 		core,
 		zap.AddCaller(),
