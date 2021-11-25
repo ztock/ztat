@@ -86,7 +86,6 @@ func getEncoder() zapcore.Encoder {
 
 func getZapLevel(loggerLevel string) zapcore.Level {
 	level := strings.ToLower(loggerLevel)
-
 	switch level {
 	case "debug":
 		return zapcore.DebugLevel
