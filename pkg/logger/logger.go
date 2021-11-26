@@ -75,6 +75,7 @@ func getLumberjackWriteSyncer(filePath string) zapcore.WriteSyncer {
 		MaxAge:     DefaultMaxAge,
 		Compress:   DefaultCompress,
 	}
+
 	return zapcore.AddSync(lumberJackLogger)
 }
 
